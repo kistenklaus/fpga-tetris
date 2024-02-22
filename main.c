@@ -3,7 +3,6 @@
  * @created     : 07/02/2024
  * @filename    : main
  */
-#include <linux/limits.h>
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -286,9 +285,33 @@ void tetris_game_place(tetris_game *self) {
   }
 }
 
+int getRightControll() {
+  return 1;
+}
+
+int getLeftControll() {
+  return 0;
+}
+
+int getRotateControll() {
+  return 0;
+}
+
 void tetris_game_update(tetris_game *self) {
-  vec2 potentialPos = vec2_new(self->m_fallingPiece.m_position.x,
-                               self->m_fallingPiece.m_position.y + 1);
+  vec2 potentialPos;
+  
+  if (getRightControll()) {
+    potentialPos = vec2_new(self->m_fallingPiece.m_position.x + 1, 
+                            self->m_fallingPiece.m_position.y + 1);
+  } else if (getLeftControll()) {
+    potentialPos = vec2_new(self->m_fallingPiece.m_position.x - 1, 
+                            self->m_fallingPiece.m_position.y + 1);
+  } else if (getRightControll()) {
+    //TODO
+  } else {
+    potentialPos = vec2_new(self->m_fallingPiece.m_position.x,
+                            self->m_fallingPiece.m_position.y + 1);
+  }
 
   unsigned int height;
   switch (self->m_fallingPiece.m_tag) {
@@ -318,6 +341,10 @@ void tetris_game_update(tetris_game *self) {
   if (potentialPos.y > CANVAS_HEIGHT - height) {
     tetris_game_place(self);
     return;
+  }
+
+  if (potentialPos.x > CANVAS_WIDTH) {
+    //TODO
   }
 
   // block collisions
