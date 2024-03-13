@@ -355,9 +355,11 @@ void tetris_game_update(tetris_game *self) {
 	vec2 potentialPos = self->m_fallingPiece.m_position;
 
 	if (getRightControll()) {
+		self->m_gameSeed = hash(self->m_gameSeed ^ 12397198471298371);
 		vec2_madd(&potentialPos, 1, 0);
 	}
 	if (getLeftControll()) {
+		self->m_gameSeed = hash(self->m_gameSeed ^ 12397198471298371);
 		vec2_madd(&potentialPos, -1, 0);
 	}
 
@@ -382,6 +384,7 @@ void tetris_game_update(tetris_game *self) {
 	}
 
 	if (getRotateControll()) {
+		self->m_gameSeed = hash(self->m_gameSeed ^ 12397198471298371);
 		int potRot = (self->m_fallingPiece.m_rotation + 1) % 4;
 		// determine new blocks!
 		vec2 potBlocks[BLOCKS_PER_PIECE] = { };
